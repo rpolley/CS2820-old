@@ -10,4 +10,3 @@ Fan Gao:                   Inventory    Yes
 Chaitanya Kovuri:          Orders       No
 Cole Petersen:             Floor        No
 James Vipond:              Visualizer   No
-
