@@ -4,7 +4,8 @@ group A4's object oriented group project
 
 the first group project for CS:2820 Object Oriented
 
-Collaborator                       
+Collaborators:
+
 
 Ryan Polley:               Master      
 
