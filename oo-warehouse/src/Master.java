@@ -18,6 +18,10 @@ public class Master {
 	private Visualizer visualizer;
 
 	private int speed;
+	private int time;
+	public int getTime(){
+		return time;
+	}
 	//speed of the simulation relative to real time
 	//0 indicates as fast as the computer can go
 	
@@ -36,6 +40,7 @@ public class Master {
 		for(FrameListener l : subscribedListeners){
 			l.onFrame();
 		}
+		time++;
 	}
 	public void initializeSimulation(){
 		this.robots = new Robots();
@@ -45,6 +50,7 @@ public class Master {
 		this.floor = new Floor();
 		this.visualizer = new Visualizer();		
 		this.speed = 1;
+		this.time = 0;
 		
 	}
 	public void startSimulation(){
