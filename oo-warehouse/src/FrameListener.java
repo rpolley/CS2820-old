@@ -8,4 +8,12 @@ public interface FrameListener {
 	 * which will be referred to from now on as one quantum of time
 	 */
 	public void onFrame();
+	/*
+	 * called for every FrameListener object after the last frame occurs
+	 * optional and does nothing by default
+	 * if you want to save something to a file before the program exits, this is where you do it
+	 */
+	public default void cleanup(){
+		//does nothing
+	}
 }

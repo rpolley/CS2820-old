@@ -18,9 +18,45 @@ public class Master {
 	private Visualizer visualizer;
 
 	private int speed;
+	public Robots getRobots() {
+		return robots;
+	}
+
+
+	public Belts getBelts() {
+		return belts;
+	}
+
+	public Inventory getInventory() {
+		return inventory;
+	}
+
+
+	public Orders getOrders() {
+		return orders;
+	}
+
+	public Floor getFloor() {
+		return floor;
+	}
+
+	public Visualizer getVisualizer() {
+		return visualizer;
+	}
 	private int time;
+
+	private boolean stopped;
+
 	public int getTime(){
 		return time;
+	}
+	/*
+	 * used if visualizer wants to implement a way to stop the simulation from the ui
+	 * this will cause the main loop to terminate after the call stack containing it resolves
+	 */
+	public void stop(){
+		stopped = true;
+		cleanupAll();
 	}
 	//speed of the simulation relative to real time
 	//0 indicates as fast as the computer can go
@@ -32,29 +68,36 @@ public class Master {
 	public void subscribe(FrameListener subscriber){
 		subscribedListeners.add(subscriber);
 	}
-	
 	/*
 	 * simulate a quantum of time
 	 */
 	private void runFrame(){
 		for(FrameListener l : subscribedListeners){
+			if(stopped)break;
 			l.onFrame();
 		}
 		time++;
 	}
+	//allow modules to do one last thing before they exit
+	private void cleanupAll(){
+		for(FrameListener l : subscribedListeners){
+			l.cleanup();
+		}
+	}
 	public void initializeSimulation(){
+		this.speed = 10;
 		this.robots = new Robots();
 		this.belts = new Belts();
 		this.inventory = new Inventory();
 		this.orders = new Orders();
 		this.floor = new Floor();
 		this.visualizer = new Visualizer();		
-		this.speed = 1;
 		this.time = 0;
-		
+		this.stopped = true;
 	}
 	public void startSimulation(){
-		while(true){
+		stopped = false;
+		while(!stopped){
 			runFrame();
 			try {
 				if(speed!=0)
