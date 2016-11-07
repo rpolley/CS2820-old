@@ -10,7 +10,7 @@ public class Master {
 	public static final Master master = new Master();
 	
 	private Collection<FrameListener> subscribedListeners;
-	private Robots robots;
+	private RobotScheduler robots;
 	private Belts belts;
 	private Inventory inventory;
 	private Orders orders;
@@ -18,7 +18,7 @@ public class Master {
 	private Visualizer visualizer;
 
 	private int speed;
-	public Robots getRobots() {
+	public RobotScheduler getRobotScheduler() {
 		return robots;
 	}
 
@@ -85,8 +85,8 @@ public class Master {
 		}
 	}
 	public void initializeSimulation(){
-		this.speed = 10;
-		this.robots = new Robots();
+		this.speed = 1;
+		this.robots = new RobotScheduler();
 		this.belts = new Belts();
 		this.inventory = new Inventory();
 		this.orders = new Orders();
