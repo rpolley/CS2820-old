@@ -149,7 +149,7 @@ public class Inventory {
 				int a = Integer.parseInt((String) newItem
 						.get("Amount"));
 				newItem.put("Amount",a+1);
-				newItem.put("Existence","Y");
+				newItem.put("InStock","Yes");
 				InList = true;
 			}
 		}
