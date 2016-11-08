@@ -200,9 +200,9 @@ public class Inventory {
 	    
 		Inventory a = new Inventory(listA);
 		a.Data();
-	    a.addItem("A");
+	        a.addItem("A");
 		a.addItem("H");
-	    a.removeItem("H");
+	        a.removeItem("H");
      }
     
 }
