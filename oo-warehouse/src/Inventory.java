@@ -80,9 +80,9 @@ public class Inventory {
         }
 	
 	
-	public void outPutFile(){
+    public void outPutFile(){
     	try
-		{
+	{
     	   PrintWriter pw = new PrintWriter(new File("C:/Users/gaofa/Documents/2016 fall/oop/1Project/btest.txt"));
     	   pw.println("Id\tName\tAmount\tSize\tInStock");
     	   String[] columnName = { "Id", "Name", "Amount", "Size", "InStock"}; 
@@ -100,7 +100,7 @@ public class Inventory {
 			pw.flush();
 			pw.close();
     	   
-		} catch (IOException e)
+	  } catch (IOException e)
 		{
 			e.printStackTrace();
 		}
@@ -149,6 +149,7 @@ public class Inventory {
 				int a = Integer.parseInt((String) newItem
 						.get("Amount"));
 				newItem.put("Amount",a+1);
+				//newItem.put("Size", null);
 				newItem.put("InStock","Yes");
 				InList = true;
 			}
@@ -206,3 +207,23 @@ public class Inventory {
      }
     
 }
+
+/* 
+Here is sample file "atest.txt"
+
+ID     Name     Amount   Size   
+001   Earpod      8     3*5*2    
+002   Cup        58     5*8*3    
+003   Box        541     8*6*5   
+004   Glove      83     4*3*1    
+005   Bottle     193    8*8*10   
+006   Lamp       0      9*3*11    
+007   Map        98      12*15*1  
+008   AA          7     4*3*2     
+009   DD         69     5*8*7    
+010  RR          280     5*6*3     
+011  TT          491     9*10*6    
+012  UU         1008      4*5*6    
+013  WW          0       6*9*2   
+014  PP          73    16*8*22    
+*/
