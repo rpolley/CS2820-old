@@ -1,9 +1,11 @@
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
-
+import java.util.Map;
+import java.util.List;
 
 public class Master {
-	private Master(){
+	protected Master(){
 		subscribedListeners = new LinkedList<FrameListener>();
 	}
 	//singleton
@@ -16,6 +18,7 @@ public class Master {
 	private Orders orders;
 	private Floor floor;
 	private Visualizer visualizer;
+	private List<Map<String,Object>> initialInventory;
 
 	private int speed;
 	public RobotScheduler getRobotScheduler() {
@@ -86,9 +89,10 @@ public class Master {
 	}
 	public void initializeSimulation(){
 		this.speed = 1;
+		this.initialInventory = new ArrayList();
 		this.robots = new RobotScheduler();
 		this.belts = new Belts();
-		this.inventory = new Inventory();
+		this.inventory = new Inventory(initialInventory);
 		this.orders = new Orders();
 		this.floor = new Floor();
 		this.visualizer = new Visualizer();		
