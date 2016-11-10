@@ -1,4 +1,5 @@
 
+
 public class Robot extends RobotScheduler {
 	int x;
 	int y;
@@ -10,6 +11,7 @@ public class Robot extends RobotScheduler {
 		this.x = startingx;
 		this.y = startingy;
 		hasShelves = false;
+		inUse=false;
 		int[] temp = new int[2];
 		temp[0]=startingx;
 		temp[1]=startingy;
@@ -32,7 +34,13 @@ public class Robot extends RobotScheduler {
 				int[] newloc = new int[2];
 				newloc[0] = toX;
 				newloc[1] = toY;
+				this.x=toX;
+				this.y=toY;
+				RobotLocs.remove(this);
 				RobotLocs.put(this, newloc);
+				//System.out.println(this.x);
+				//System.out.println(RobotLocs.get(this)[0]);
+				//System.out.println(newloc[0]+ "  "+newloc[1]);
 				batterylife = batterylife - .001;
 
 			}
