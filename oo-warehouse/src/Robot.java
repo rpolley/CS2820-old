@@ -1,5 +1,6 @@
 
 
+
 public class Robot extends RobotScheduler {
 	int x;
 	int y;
@@ -18,8 +19,8 @@ public class Robot extends RobotScheduler {
 		//RobotLocs.put(this, temp);
 	}
 
-	public boolean isCarryingShelves(Robot i) {
-		if (hasShelves) {
+	public boolean isCarryingShelves(){
+		if (this.hasShelves) {
 			return true;
 		}
 		return false;
