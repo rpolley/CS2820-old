@@ -18,6 +18,7 @@ public class Master {
 	private Orders orders;
 	private Floor floor;
 	private Visualizer visualizer;
+	private FrameListener visualizerUpdater;
 	private List<Map<String,Object>> initialInventory;
 
 	private int speed;
@@ -79,6 +80,7 @@ public class Master {
 			if(stopped)break;
 			l.onFrame();
 		}
+		visualizerUpdater.onFrame();
 		time++;
 	}
 	//allow modules to do one last thing before they exit
@@ -95,7 +97,8 @@ public class Master {
 		this.inventory = new Inventory(initialInventory);
 		this.orders = new Orders();
 		this.floor = new Floor();
-		this.visualizer = new Visualizer();		
+		this.visualizer = new Visualizer();
+		this.visualizerUpdater = this.visualizer;
 		this.time = 0;
 		this.stopped = true;
 	}

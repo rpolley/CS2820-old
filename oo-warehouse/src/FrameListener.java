@@ -15,5 +15,6 @@ public interface FrameListener {
 	 */
 	public default void cleanup(){
 		//does nothing
+		//ignore this method if you don't need it
 	}
 }
