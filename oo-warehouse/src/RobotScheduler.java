@@ -2,14 +2,20 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class RobotScheduler {// implements Time
-	// So this is where we have to plan out a robot's path
-	// which is gonna be a bit tricky
+public class RobotScheduler implements FrameListener {// implements Time
+	/**
+	 * @author Jonathan Reinhart
+	 */
 	public RobotScheduler() {
+		Master.master.subscribe(this);
 		RobotLocs = new HashMap<Robot, int[]>();
 		RequestQueue = new LinkedList<int[]>();
 		ShelvesLocs = new HashMap<Integer, int[]>();
 	}
+	/**
+	 * @param doesn't not take in anything, this is where we create the select number of robots needed
+	 * @return doesn't return anything, just creates the robots and sets them to initial locations so there is a void return.
+	 */
 	public void addRobots(){
 		Robot robo1 = new Robot(5, 5);
 		int[] temp = new int[2];
@@ -27,65 +33,67 @@ public class RobotScheduler {// implements Time
 	// with [x,y] location as the int array.
 	public HashMap<Integer, int[]> ShelvesLocs;
 	public HashMap<Robot, int[]> RobotLocs;
-
-	/*
-	 * public void addRobot() { // whenever we have to add a robot Robot robo1 =
-	 * new Robot(5, 5); int[] loc1 = new int[2]; loc1[0] = robo1.x; loc1[1] =
-	 * robo1.y; RobotLocs.put(robo1, loc1); }
-	 */
-	
-
-	public void UpdateRobotLocs(Robot i, int x, int y) {
-		RobotLocs.get(i)[0] = x;
-		RobotLocs.get(i)[1] = y;
+	public void addRequest(int shelfid, int[] final){ // or an int as to where the picker/packer is or where loading dock
+		
 	}
+/**
+ * 
+ * @param requestid this id, is up to change but as of right now, i take an order request like, item on shelf 2 move to 
+ * the picker, or pick up new inventory at the shipping docks and use shelf 4
+ * @return I don't return anything I update RobotLocs, which is robot locations and go off whatever the queue is.
+ * 
+ * this method is the one moving the robots from their original x,y coordinates to pick up a shelf then from that shelf
+ * take it wherever it needs to go, then return that shelf to its orginal location.
+ */
+	public void onFrame(){
+		MovingRobots();
+	}
+	public void moveRobot(Robot i, int[] locid){
+		int toLocationX = locid[0];
+		int toLocationY = locid[1];
+		// System.out.println(i.batterylife);
+		int robotx = i.x;
+		int roboty = i.y;			
+			robotx = i.x;
+			roboty = i.y;
+			// where we move the one robot to the shelve.
+			// for each tick of the interface
+			// trying to figure out a way to get around
+			int check = 0;
+			if (toLocationX - robotx < 0) {
+				i.move(robotx - 1, roboty);
+				// if it isnt a legal move, it wont move that means we can
+				// do
+				// something else
+				// System.out.println(RobotLocs.get(i)[0]+"yolo");
+				if (i.isLegalMove(robotx - 1, roboty) == false) {
+					check = 0;
+				} else {
+					check = 1;
+				}
+			} else if (toLocationX - robotx > 0) {
+				i.move(robotx + 1, roboty);
+				if (i.isLegalMove(robotx + 1, roboty) == false) {
+				} else {
+					check = 1;
+				}
+			}
 
-	public void MovingRobots(int requestid) {
+			if (check == 0 && toLocationY - roboty < 0) {
+				i.move(robotx, roboty - 1);
+			} else if (check == 0 && toLocationY - roboty > 0) {
+				i.move(robotx, roboty + 1);
+			}
+			check = 0;
+			System.out.println("Robot x loc " + robotx + " Robot y loc " + roboty);
+			System.out.println("Shelf x loc " + toLocationX + " Shelf y loc " + toLocationY);
+	}
+	public void MovingRobots(){
 		int[] locid = RequestQueue.remove();
 		Robot i = closestRobot(locid[0], locid[1]);
 		// while shelvex doesnt equal robot x etc. with y.
 		if (requestid == 0) {
-			int toLocationX = locid[0];
-			int toLocationY = locid[1];
-			// System.out.println(i.batterylife);
-			int robotx = i.x;
-			int roboty = i.y;
-			while (toLocationX != robotx || toLocationY != roboty) {
-				robotx = i.x;
-				roboty = i.y;
-				// where we move the one robot to the shelve.
-				// for each tick of the interface
-				// trying to figure out a way to get around
-				int check = 0;
-				if (toLocationX - robotx < 0) {
-					i.move(robotx - 1, roboty);
-					// if it isnt a legal move, it wont move that means we can
-					// do
-					// something else
-					// System.out.println(RobotLocs.get(i)[0]+"yolo");
-					if (i.isLegalMove(robotx - 1, roboty) == false) {
-						check = 0;
-					} else {
-						check = 1;
-					}
-				} else if (toLocationX - robotx > 0) {
-					i.move(robotx + 1, roboty);
-					if (i.isLegalMove(robotx + 1, roboty) == false) {
-					} else {
-						check = 1;
-					}
-				}
-
-				if (check == 0 && toLocationY - roboty < 0) {
-					i.move(robotx, roboty - 1);
-				} else if (check == 0 && toLocationY - roboty > 0) {
-					i.move(robotx, roboty + 1);
-				}
-				check = 0;
-				System.out.println("Robot x loc " + robotx + " Robot y loc " + roboty);
-				System.out.println("Shelf x loc " + toLocationX + " Shelf y loc " + toLocationY);
-
-			}
+			onFrame();
 			if (i.isCarryingShelves()) {
 				i.hasShelves = false;
 			} else {
@@ -96,7 +104,13 @@ public class RobotScheduler {// implements Time
 		}
 
 	}
-
+/**
+ * 
+ * @param x closest robot to this combination of x,y coordinates, might be changed to accept an int array to make
+ * life a bit easier
+ * @param y
+ * @return closest robot to the given x and y.
+ */
 	public Robot closestRobot(int x, int y) {
 		for (Robot i : RobotLocs.keySet()) {
 			if ((i.inUse == false)) {
