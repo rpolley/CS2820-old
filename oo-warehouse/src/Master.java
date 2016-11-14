@@ -96,7 +96,7 @@ public class Master {
 		this.belts = new Belts();
 		this.inventory = new Inventory(initialInventory);
 		this.orders = new Orders();
-		this.floor = new Floor();
+		this.floor = new Floor(10,10,1);
 		this.visualizer = new Visualizer();
 		this.visualizerUpdater = this.visualizer;
 		this.time = 0;
