@@ -31,7 +31,7 @@ public class Inventory {
     }
     
     
-     //this method read a txt file, with items information
+     //This method read a txt file, with items information
      //then put into an arraylist, each element is an item
      //each item has name, amount, existence, shelf, point,...blablabla...
      /**
@@ -41,7 +41,7 @@ public class Inventory {
     public void data(){
     	BufferedReader br = null;
 		try
-		{      //read file from the path
+		{      //read file from the path, when testing change path to "list1.txt"
 			br = new BufferedReader(new FileReader("C:\\Users\\fgao6\\Desktop\\list1.txt"));
 		} catch (FileNotFoundException e)
 		{
@@ -95,7 +95,7 @@ public class Inventory {
 		}
     }
         
-        // check existence, 
+        // This method check existence, 
     	// if exist isExist is true
     	// else false
         /**
@@ -129,7 +129,7 @@ public class Inventory {
     }
     
     
-     //method can remove item from the inventory 
+     //This method can remove item from the inventory 
      //first check if the item is in stock
       //if not exist, say not found
       //if exist, let the item's amount -1
@@ -165,7 +165,7 @@ public class Inventory {
     	outPutFile();	
     }
     
-     //method add item to inventory
+     //This method add item to inventory
      //if item already in inventory, amount +1
      //if not in list, make new item id, let amount =1
      /** 
@@ -200,7 +200,7 @@ public class Inventory {
     	outPutFile();  
     } 
     
-     //write the modified inventory list into a new file.txt
+     //This method write the modified inventory list into a new file.txt
      //output a new file with refreshed list
      /**
       * @param nothing, but write all the "inventory" into a new file 
@@ -233,7 +233,7 @@ public class Inventory {
 		}
     }
     
-    //main thod to test for inventory
+    //main method to test for inventory
     /**
      * @param args 
      */
