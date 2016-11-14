@@ -5,6 +5,8 @@ package inventory;
  *
  */
 
+//use "list1.txt" to test
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
