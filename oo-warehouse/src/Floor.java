@@ -1,44 +1,92 @@
 
 public class Floor {
 	
-	public Object[][] layout = new Object[10][10];
-	
-	public Floor() {
-		// Floor layout is hardcoded for now (10x10, can be expanded later).
-		// Assuming one robot.
+	public Floor(int x, int y, int AmtRobots) {
+		
+		Object[][] layout = new Object[x][y];
+		
+		int HighwayWidth;
+		int AmtChargers;
+		
+		// If not enough room for required objects:
+		
+		if(x < 4){
+			throw new IllegalArgumentException(Integer.toString(x));
+		}
+		
+		if(y < 4){
+			throw new IllegalArgumentException(Integer.toString(y));
+		}
+		
+		// Maximum amount of chargers is ((x-3)/2)-1 (see charger placement below)
+		// so maximum amount of robots is 2(((x-3)/2)-1).
+		// That ratio of robots to floor size would be pretty unreasonable anyway.
+		
+		// If less than 1 robot or too many chargers required for available space:
+		
+		if(AmtRobots < 1 || AmtRobots > 2*(((x-3)/2)-1)){
+			throw new IllegalArgumentException(Integer.toString(AmtRobots));
+		}
+		
+		// Set general highway width according to amount of robots.
+		// This will not always be exact, but sets a guide for the floor layout.
+		if(AmtRobots == 1){
+			HighwayWidth = 1;
+		}
+		else if(AmtRobots > 1 && AmtRobots <= 10){
+			HighwayWidth = 2;
+		}
+		else{
+			HighwayWidth = 3;
+		}
+		
+		// Set amount of chargers according to amount of robots.
+		if(AmtRobots == 1){
+			AmtChargers = 1;
+		}
+		else{
+			AmtChargers = AmtRobots/2;
+		}
 		
 		// put belt along left wall
-		for(int i = 0; i < 10; i++){
-			layout[i][0] = new Belts(i, 0);
+		for(int i = 0; i < x; i++){
+			layout[i][0] = new Belts(x, 0);
 		}
 		
 		// put pick/pack stations at beginning and end of belt
 		layout[0][1] = new Pack(0, 1);
 		
-		layout[9][1] = new Pick(9, 1);
+		layout[x-1][1] = new Pick(x-1, 1);
 		
-		// put 2 3x2 blocks of shelf spaces in middle, separated by highway
-		for(int i = 2; i < 4; i++){
-			for(int j = 3; j < 6; j++){
-				layout[i][j] = new ShelfSpace(i, j);
+		// Put shelf spaces of width 2 on floor.
+		// Leave HighwayWidth spaces between them and walls, belts, and each other.
+		// Chargers and other 1x1 objects can be within HighwayWidth,
+		// there are not enough of them to be a big issue.
+		// There are no horizontal breaks right now, but they can be added later.
+		for(int k = HighwayWidth; k < x-HighwayWidth-1; k = k+HighwayWidth+2){
+			for(int i = k; i < k+2; i++){
+				for(int j = HighwayWidth+1; j < y-HighwayWidth; j++){
+					layout[i][j] = new ShelfSpace(i, j);
+				}
 			}
 		}
 		
-		for(int i = 5; i < 7; i++){
-			for(int j = 3; j < 6; j++){
-				layout[i][j] = new ShelfSpace(i, j);
+		// Put chargers along top wall, leaving a space between each and other objects for flexibility.
+		// There should be enough space for all of the chargers with reasonable inputs.
+		int ChargersPlaced = 0;
+		while(ChargersPlaced < AmtChargers){
+			for(int j = 3; j < y - 2; j = j+2){
+				layout[0][j] = new Charger(0, j);
+				ChargersPlaced++;
 			}
 		}
-		
-		// put charger along top wall, in middle
-		layout[0][4] = new Charger(0, 4);
 		
 		// put receiving dock in top right corner
-		layout[0][9] = new RecDock(0, 9);
+		layout[0][y] = new RecDock(0, y);
 		
 		// put highways everywhere else
-		for(int i = 0; i < 10; i++){
-			for(int j = 0; j < 10; j++){
+		for(int i = 0; i < x; i++){
+			for(int j = 0; j < y; j++){
 				if(layout[i][j] == null){
 					layout[i][j] = new Highway(i, j);
 				}
