@@ -45,7 +45,7 @@ public class Inventory {
 		}
 
 		String[] columnName =
-		{ "Id", "Name", "Amount"};  //name of columns
+		{ "Id", "Name", "Amount", "Shelf#", "Position"};  //name of columns
 		int i, index;
 		String line;
 		try
@@ -67,6 +67,7 @@ public class Inventory {
 						continue;
 					}
 					item.put(columnName[index], se[i]);
+                                        //put item information into each item
 					index++;
 				}
 				
@@ -163,16 +164,19 @@ public class Inventory {
     	try
 		{
     	   PrintWriter pw = new PrintWriter(new File("C:\\Users\\fgao6\\Desktop\\list2.txt"));
-    	   pw.println("Id\tName\tAmount\tExistence");
-    	   String[] columnName = { "Id", "Name", "Amount"}; 
+    	   pw.println("Id\tName\tAmount\tShelf#\tPosition\tExistence");
+    	   String[] columnName = { "Id", "Name", "Amount", "Shelf#", "Position"}; 
 			int cIndex;
 			for (int i = 0; i < inventory.size(); i++)
 			{
 				Map<String, Object> st = inventory.get(i);
 				cIndex = 0;
 				pw.println(st.get(columnName[cIndex++]) + "\t"
-						+ st.get(columnName[cIndex++]) + "\t"
-						+ st.get(columnName[cIndex++]) + "\t"+st.get("Existence"))  ;
+				+ st.get(columnName[cIndex++]) + "\t"
+				+ st.get(columnName[cIndex++]) + "\t"
+                                + st.get(columnName[cIndex++]) + "\t"
+                                + st.get(columnName[cIndex++]) + "\t"+"\t"
+                                + st.get("Existence"))  ;
 			}
 			pw.flush();
 			pw.close();
