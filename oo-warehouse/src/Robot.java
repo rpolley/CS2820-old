@@ -1,6 +1,4 @@
 
-
-
 public class Robot extends RobotScheduler {
 	int x;
 	int y;

@@ -33,8 +33,8 @@ public class RobotScheduler implements FrameListener {// implements Time
 	// with [x,y] location as the int array.
 	public HashMap<Integer, int[]> ShelvesLocs;
 	public HashMap<Robot, int[]> RobotLocs;
-	public void addRequest(int shelfid, int[] final){ // or an int as to where the picker/packer is or where loading dock
-		
+	public void addRequest(int[] locations){ // or an int as to where the picker/packer is or where loading dock
+		RequestQueue.add(locations);
 	}
 /**
  * 
@@ -92,8 +92,9 @@ public class RobotScheduler implements FrameListener {// implements Time
 		int[] locid = RequestQueue.remove();
 		Robot i = closestRobot(locid[0], locid[1]);
 		// while shelvex doesnt equal robot x etc. with y.
-		if (requestid == 0) {
-			onFrame();
+		moveRobot(i,locid);
+		//or onFrame();
+		//if (requestid == 0) {
 			if (i.isCarryingShelves()) {
 				i.hasShelves = false;
 			} else {
@@ -101,7 +102,7 @@ public class RobotScheduler implements FrameListener {// implements Time
 			}
 			
 			
-		}
+		//}
 
 	}
 /**
