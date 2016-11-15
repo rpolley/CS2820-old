@@ -1,3 +1,11 @@
+package inventory;
+/**
+ *
+ * @author Fan Gao
+ *
+ */
+
+//use "list1.txt" to test
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,32 +20,42 @@ import java.util.Map;
 
 public class Inventory {
 	boolean isExist;
+	//boolean isInList;
 	int amount;
+        //the amount of the item
 	List<Map<String, Object>> inventory = new ArrayList<Map<String, Object>>();
-	
+	//inventory with items in it, each item is a hashmap
+        
     public Inventory(List inventory){
         this.inventory = inventory;
     }
     
-    public void Data(){
+    
+     //This method read a txt file, with items information
+     //then put into an arraylist, each element is an item
+     //each item has name, amount, existence, shelf, point,...blablabla...
+     /**
+      * @param nothing, read the file and acquire the inventory information
+      * 
+      */
+    public void data(){
     	BufferedReader br = null;
 		try
-		{
-			br = new BufferedReader(new FileReader("C:/Users/gaofa/Documents/2016 fall/oop/1Project/atest.txt"));
-			//the local path of file
+		{      //read file from the path, when testing change path to "list1.txt"
+			br = new BufferedReader(new FileReader("C:\\Users\\fgao6\\Desktop\\list1.txt"));
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
 			return;
 		}
-
+                
 		String[] columnName =
-		{ "Id", "Name", "Amount", "Size"};   //name of columns 
+		{ "Id", "Name", "Amount", "Shelf#", "Position"};  //name of columns
 		int i, index;
 		String line;
 		try
 		{
-			br.readLine();    //ignore first line
+			br.readLine(); //ignore first line
 			while ((line = br.readLine()) != null)
 			{
 				index = 0;
@@ -54,60 +72,72 @@ public class Inventory {
 						continue;
 					}
 					item.put(columnName[index], se[i]);
+                                        //put item information into each item
 					index++;
 				}
 				
 				int amount = Integer.parseInt((String) item
 							.get(columnName[2]));
-				
 				if (amount > 0){
-					item.put("InStock", "Yes");
+					item.put("Existence", "Y");
 				}
 				else{
-					item.put("InStock", "No");
+					item.put("Existence", "N");
 				}
-
 				inventory.add(item);
 			}
-			br.close();
-            
-			outPutFile();  //wirte the inventory on a file
+			br.close();  //done read file
+                        
+			outPutFile();  //out put the file
 		} catch (IOException e)
 		{
 			e.printStackTrace();
 		}
-    	
-        }
-	
-	
-    public void outPutFile(){
-    	try
-	{
-    	   PrintWriter pw = new PrintWriter(new File("C:/Users/gaofa/Documents/2016 fall/oop/1Project/btest.txt"));
-    	   pw.println("Id\tName\tAmount\tSize\tInStock");
-    	   String[] columnName = { "Id", "Name", "Amount", "Size", "InStock"}; 
-			int cIndex;
-			for (int i = 0; i < inventory.size(); i++)
-			{
-				Map<String, Object> st = inventory.get(i);
-				cIndex = 0;
-				pw.println(st.get(columnName[cIndex++]) + "\t"
-					    + st.get(columnName[cIndex++]) + "\t"
-					    + st.get(columnName[cIndex++]) + "\t"
-					    + st.get(columnName[cIndex++]) + "\t"
-					    +st.get("InStock"))  ;
-			}
-			pw.flush();
-			pw.close();
-    	   
-	  } catch (IOException e)
-		{
-			e.printStackTrace();
-		}
     }
-	
-  
+        
+        // This method check existence, 
+    	// if exist isExist is true
+    	// else false
+        /**
+         * @param itemName
+         * @return boolean, if the item's Amount =0, return false; 
+         *                  if amount != 0, return true
+         * 
+         */
+    public boolean checkExist(String itemName){
+
+    	for (int i = 0; i < inventory.size(); i++)
+		{
+    		Map<String, Object> newItem = new HashMap<String, Object>();
+    		newItem = inventory.get(i);
+			if (itemName.equals( newItem.get("Name").toString())){
+				int a = Integer.parseInt((String) newItem.get("Amount"));
+				//isInList = true;
+				if (a != 0){
+					isExist = true;
+					break;
+				}
+				else{
+					isExist = false;
+				}
+			}
+			else{
+				isExist = false;
+			}
+		}
+    	return isExist;	
+    }
     
+    
+     //This method can remove item from the inventory 
+     //first check if the item is in stock
+      //if not exist, say not found
+      //if exist, let the item's amount -1
+      /**
+       * @param itemName
+       * its gonna remove the item is called, subtract by 1 in Amount
+       * 
+       */
     public void removeItem(String itemName){
     	if (checkExist(itemName) == true){
     		int i;
@@ -122,24 +152,29 @@ public class Inventory {
     				removedItem.put("Amount",a-1);
     				
     				if (a-1 < 1){
-    					removedItem.put("InStock","No");
+    					removedItem.put("Existence","N");
     				}
     			}
     		}
     	}
-    	
     	else{
     		System.out.println("Item not exist");
     		checkExist(itemName);
     	}
     	
-    	outPutFile();
-    		
+    	outPutFile();	
     }
     
+     //This method add item to inventory
+     //if item already in inventory, amount +1
+     //if not in list, make new item id, let amount =1
+     /** 
+      * @param itemName 
+      * its gonna add the called item into the inventory, plus the Amount by 1
+      * 
+      */
     public void addItem(String itemName){
-        //add item to inventory
-        boolean InList = false;
+    	boolean InList = false;
     	int i;
     	for (i = 0; i < inventory.size(); i++)
 		{
@@ -149,81 +184,72 @@ public class Inventory {
 				int a = Integer.parseInt((String) newItem
 						.get("Amount"));
 				newItem.put("Amount",a+1);
-				//newItem.put("Size", null);
-				newItem.put("InStock","Yes");
+				newItem.put("Existence","Y");
 				InList = true;
 			}
 		}
-    	
     	if (InList == false){
     		Map<String, Object> newItem = new HashMap<String, Object>();
     		newItem.put("Id", i+1);
     		newItem.put("Name",itemName);
     		newItem.put("Amount",1);
-                newItem.put("Size", null);
-    		newItem.put("InStock","Yes");
+    		newItem.put("Existence","Y");
     		inventory.add(newItem);
     	}
     	
-    	outPutFile();
-    }
+    	outPutFile();  
+    } 
     
-    public boolean checkExist(String itemName){
-    	/* add code here to check existence, 
-    	 * if exist isExist is true
-    	 * else false*/
-    	for (int i = 0; i < inventory.size(); i++)
+     //This method write the modified inventory list into a new file.txt
+     //output a new file with refreshed list
+     /**
+      * @param nothing, but write all the "inventory" into a new file 
+      * 
+      */
+    public void outPutFile(){
+    	try
 		{
-    		Map<String, Object> newItem = new HashMap<String, Object>();
-    		newItem = inventory.get(i);
-			if (itemName.equals(newItem.get("Name").toString())){
-				int a = Integer.parseInt((String) newItem.get("Amount"));
-				if (a != 0){
-					isExist = true;
-					break;
-				}
-				else{
-					isExist = false;
-				}
+    	   PrintWriter pw = new PrintWriter(new File("C:\\Users\\fgao6\\Desktop\\list2.txt"));
+    	   pw.println("Id\tName\tAmount\tShelf#\tPosition\tExistence");
+    	   String[] columnName = { "Id", "Name", "Amount", "Shelf#", "Position"}; 
+			int cIndex;
+			for (int i = 0; i < inventory.size(); i++)
+			{
+				Map<String, Object> st = inventory.get(i);
+				cIndex = 0;
+				pw.println(st.get(columnName[cIndex++]) + "\t"
+				+ st.get(columnName[cIndex++]) + "\t"
+				+ st.get(columnName[cIndex++]) + "\t"
+                                + st.get(columnName[cIndex++]) + "\t"
+                                + st.get(columnName[cIndex++]) + "\t"+"\t"
+                                + st.get("Existence"))  ;
 			}
-			else{
-				isExist = false;
-				
-			}
-			
+			pw.flush();
+			pw.close();
+    	   
+		} catch (IOException e)
+		{
+			e.printStackTrace();
 		}
-        return isExist;
     }
     
+    //main method to test for inventory
+    /**
+     * @param args 
+     */
     public static void main(String[] args) {
-		List<Map<String, Object>> listA = new ArrayList<Map<String, Object>>();
-		/*add code here to read file and insert the item in to listA*/
+		
+	List<Map<String, Object>> listA = new ArrayList<Map<String, Object>>();
+	 //add code here to read file and insert the item in to listA
 	    
-		Inventory a = new Inventory(listA);
-		a.Data();
-	        a.addItem("A");
-		a.addItem("H");
-	        a.removeItem("H");
-     }
-    
+	Inventory a = new Inventory(listA);
+	a.data();
+	 //a.checkExist("K");
+		
+	a.addItem("Z");
+	a.addItem("H");
+	a.addItem("A");
+	a.addItem("F");
+	a.removeItem("K");
+	}  
 }
-
-/* 
-Here is sample file "atest.txt"
-
-ID     Name     Amount   Size   
-001   Earpod      8     3*5*2    
-002   Cup        58     5*8*3    
-003   Box        541     8*6*5   
-004   Glove      83     4*3*1    
-005   Bottle     193    8*8*10   
-006   Lamp       0      9*3*11    
-007   Map        98      12*15*1  
-008   AA          7     4*3*2     
-009   DD         69     5*8*7    
-010  RR          280     5*6*3     
-011  TT          491     9*10*6    
-012  UU         1008      4*5*6    
-013  WW          0       6*9*2   
-014  PP          73    16*8*22    
-*/
