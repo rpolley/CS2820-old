@@ -127,6 +127,7 @@ public class Master {
 	public void initializeSimulation(){
 		this.initialInventory = new ArrayList();
 		this.robots = new RobotScheduler();
+		this.robots.addRobots();
 		this.belts = new Belts();
 		this.inventory = new Inventory(initialInventory);
 		this.orders = new Orders();
