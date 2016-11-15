@@ -49,6 +49,12 @@ public class Visualizer implements FrameListner{
 	    frame.setVisible(true);
 	}
 	
+	/**
+	 * 
+	 * @author James Vipond
+	 * @result Reads information from the Floor class to
+	 * create the layout of the unmovable components of the floor
+	 */
     private static void initialize() {       
         
         for(int x = 0; x < floor.length; x++){
@@ -86,6 +92,11 @@ public class Visualizer implements FrameListner{
         initalSetup = labelGrid.clone();
     }
     
+    /**
+    *
+    * @author James Vipond
+    * @result Renders the new locaitons of robots and shelves
+    */
     private static void placeMovables(){
     	
     	oldRobotIter = oldRobots.keySet().iterator();
@@ -119,6 +130,12 @@ public class Visualizer implements FrameListner{
     	
     }
     
+    /**
+    *
+    * @author James Vipond
+    * @result Called every frame to update display with
+    * new information
+    */
     public void onFrame(){
     	placeMovables();
     }
