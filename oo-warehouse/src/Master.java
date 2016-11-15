@@ -5,17 +5,19 @@ import java.util.Map;
 import java.util.List;
 
 public class Master {
-	protected Master(){
+	protected Master(int speed, int robotCount){
 		subscribedListeners = new LinkedList<FrameListener>();
-		this.speed = 1;
+		this.speed = speed;
+		this.robotCount = robotCount;
 		this.time = 0;
 		this.stopped = true;
 	}
 	//singleton
-	public static final Master master = new Master();
+	public static final Master master = new Master(1,1);
 	
 	private Collection<FrameListener> subscribedListeners;
 	private RobotScheduler robots;
+	private int robotCount;
 	private Belts belts;
 	private Inventory inventory;
 	private Orders orders;
