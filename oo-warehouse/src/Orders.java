@@ -18,7 +18,9 @@ public class Orders implements FrameListener{
 	Queue<Integer> ordersQueue; //LinkedList and the Integer is the OrderID
 
 
-	//constructor
+	/**
+         * @param nothing for now. But might change later on.
+         */
 	public Orders () {
 		//using "order" instead of Object because
 		//wont have to cast back while calling getters.
@@ -26,6 +28,10 @@ public class Orders implements FrameListener{
 		initialOrders  = new HashMap<Integer,order>();
 		ordersQueue = new LinkedList<Integer>();
 	}
+
+        public void onFrame(){
+
+        }
 
 
 	/**Generates a new order. The HashMap is used for storing an
@@ -77,7 +83,7 @@ public class Orders implements FrameListener{
          * @param customerOrder An order object used here to
          * verify if the Customer's ordered items are present in the
          * warehouse Inventory.
-         * @return bothPresent . If the item and quantity desired are
+         * @return bothPresent If the item and quantity desired are
          * available in the warehouse Inventory.
          */
 	public boolean verifyOrderItems (order customerOrder){
