@@ -1,9 +1,25 @@
 
+/*
+ * @author Cole Petersen
+ * 
+ * Floor object:
+ * Stores layout of the floor, including locations of belts, shelf spaces, and more.
+ */
+
 public class Floor {
+	
+	int x;
+	int y;
+	int AmtRobots;
+	public Object[][] layout;
 	
 	public Floor(int x, int y, int AmtRobots) {
 		
-		Object[][] layout = new Object[x][y];
+		this.x = x;
+		this.y = y;
+		this.AmtRobots = AmtRobots;
+		
+		this.layout = new Object[x][y];
 		
 		int HighwayWidth;
 		int AmtChargers;
@@ -53,19 +69,22 @@ public class Floor {
 			layout[i][0] = new Belts(x, 0);
 		}
 		
-		// put pick/pack stations at beginning and end of belt
-		layout[0][1] = new Pack(0, 1);
+		// Put pick/pack stations at beginning and end of belt.
+		// Size is 1 wide, HighwayWidth tall.
+		for(int i = 0; i < HighwayWidth; i++){
+			layout[i][1] = new Pack(i, 1);
+		}
 		
-		layout[x-1][1] = new Pick(x-1, 1);
+		for(int i = x-1; i > x-HighwayWidth-1; i--){
+			layout[i][1] = new Pick(i, 1);
+		}
 		
 		// Put shelf spaces of width 2 on floor.
-		// Leave HighwayWidth spaces between them and walls, belts, and each other.
-		// Chargers and other 1x1 objects can be within HighwayWidth,
-		// there are not enough of them to be a big issue.
+		// Leave HighwayWidth spaces between them and other objects, including each other.
 		// There are no horizontal breaks right now, but they can be added later.
-		for(int k = HighwayWidth; k < x-HighwayWidth-1; k = k+HighwayWidth+2){
+		for(int k = HighwayWidth+1; k < x-HighwayWidth-1; k = k+HighwayWidth+2){
 			for(int i = k; i < k+2; i++){
-				for(int j = HighwayWidth+1; j < y-HighwayWidth; j++){
+				for(int j = HighwayWidth+2; j < y-HighwayWidth; j++){
 					layout[i][j] = new ShelfSpace(i, j);
 				}
 			}
@@ -74,15 +93,15 @@ public class Floor {
 		// Put chargers along top wall, leaving a space between each and other objects for flexibility.
 		// There should be enough space for all of the chargers with reasonable inputs.
 		int ChargersPlaced = 0;
-		while(ChargersPlaced < AmtChargers){
-			for(int j = 3; j < y - 2; j = j+2){
+		for(int j = 3; j < y - 2; j = j+2){
+			if(ChargersPlaced < AmtChargers){
 				layout[0][j] = new Charger(0, j);
 				ChargersPlaced++;
 			}
 		}
 		
 		// put receiving dock in top right corner
-		layout[0][y] = new RecDock(0, y);
+		layout[0][y-1] = new RecDock(0, y-1);
 		
 		// put highways everywhere else
 		for(int i = 0; i < x; i++){

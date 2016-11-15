@@ -1,4 +1,10 @@
 
+/*
+ * @author Cole Petersen
+ * 
+ * Picker object
+ */
+
 public class Pick extends DrivableSpaceType {
 	
 	public Pick(int x, int y){

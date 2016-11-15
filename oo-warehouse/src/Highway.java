@@ -1,4 +1,10 @@
 
+/*
+ * @author Cole Petersen
+ * 
+ * Highway object
+ */
+
 public class Highway extends DrivableSpaceType {
 	
 	public Highway(int x, int y){

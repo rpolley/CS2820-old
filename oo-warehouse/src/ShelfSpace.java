@@ -1,4 +1,10 @@
 
+/*
+ * @author Cole Petersen
+ * 
+ * Shelf Space object
+ */
+
 public class ShelfSpace extends DrivableSpaceType {
 
 	public boolean HasShelf;

@@ -1,4 +1,10 @@
 
+/*
+ * @author Cole Petersen
+ * 
+ * Charger object
+ */
+
 public class Charger extends DrivableSpaceType {
 	
 	public Charger(int x, int y){

@@ -1,4 +1,10 @@
 
+/*
+ * @author Cole Petersen
+ * 
+ * Packer object
+ */
+
 public class Pack extends DrivableSpaceType {
 	
 	public Pack(int x, int y){

@@ -1,4 +1,10 @@
 
+/*
+ * @author Cole Petersen
+ * 
+ * Receiving Dock object
+ */
+
 public class RecDock extends DrivableSpaceType {
 	
 	public RecDock(int x, int y){
