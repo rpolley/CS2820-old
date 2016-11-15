@@ -11,7 +11,7 @@ import java.util.Collection;
  * Warehouse Final Project: Orders
  */
 
-public class Orders{
+public class Orders implements FrameListener{
 
 	//All the below are Instance variables.
 	HashMap<Integer, order> initialOrders;
@@ -22,14 +22,19 @@ public class Orders{
 	public Orders () {
 		//using "order" instead of Object because
 		//wont have to cast back while calling getters.
-
+                Master.master.subscribe(this);
 		initialOrders  = new HashMap<Integer,order>();
 		ordersQueue = new LinkedList<Integer>();
 	}
 
 
-	/*Generates a new order. The HashMap is used for storing an
+	/**Generates a new order. The HashMap is used for storing an
 	 * Order's item Name and the desired Quantity
+         * @param OrderID,
+         * @param itemAndQty :A Map with Item names as Key and
+         * the quantity desired by the Customer as it's value
+         * @param address of where the order needs to be delivered.
+         *
 	 */
 
 	public void generateOrder (int OrderID, HashMap<String,Integer> itemAndQty, String address){
@@ -48,6 +53,11 @@ public class Orders{
 
 
 	//order reaches the exit/truck
+        /**
+         *
+         * @param OrderID to check if a certain order has been
+         * fulfilled
+         */
 	public void orderFulfilled(int OrderID){
 		int exitOrderID = ordersQueue.poll(); //dequeue
 		order details = initialOrders.get(exitOrderID);//update the order status.
@@ -62,6 +72,14 @@ public class Orders{
 	}
 
 	//Boolean method to check if Order items are present in Inventory
+        /**
+         *
+         * @param customerOrder An order object used here to
+         * verify if the Customer's ordered items are present in the
+         * warehouse Inventory.
+         * @return bothPresent . If the item and quantity desired are
+         * available in the warehouse Inventory.
+         */
 	public boolean verifyOrderItems (order customerOrder){
 		boolean itemsPresent;
 		boolean qtyPresent;
