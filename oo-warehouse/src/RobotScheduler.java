@@ -6,6 +6,7 @@ import java.util.Queue;
 public class RobotScheduler implements FrameListener {// implements Time
 	/**
 	 * @author Jonathan Reinhart
+	 * 
 	 */
 	public RobotScheduler() {
 		Master.master.subscribe(this);

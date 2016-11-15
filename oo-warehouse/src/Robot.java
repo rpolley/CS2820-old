@@ -1,6 +1,6 @@
 /**
  * 
- * @author JJ
+ * @author Jonathan Reinhart
  *
  */
 public class Robot extends RobotScheduler {
