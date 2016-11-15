@@ -1,21 +1,28 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.List;
+import java.util.Scanner;
 
 public class Master {
-	protected Master(){
+	protected Master(int speed, int robotCount){
 		subscribedListeners = new LinkedList<FrameListener>();
-		this.speed = 1;
+		this.speed = speed;
+		this.robotCount = robotCount;
 		this.time = 0;
 		this.stopped = true;
 	}
 	//singleton
-	public static final Master master = new Master();
+	public static final Master master = new Master(1,1);
 	
 	private Collection<FrameListener> subscribedListeners;
 	private RobotScheduler robots;
+	private int robotCount;
 	private Belts belts;
 	private Inventory inventory;
 	private Orders orders;
@@ -26,6 +33,8 @@ public class Master {
 	//speed of the simulation relative to real time
 	//0 indicates as fast as the computer can go
 	private int speed;
+	private int time;
+	private boolean stopped;
 	
 	/*
 	 * @author rpolley
@@ -68,9 +77,6 @@ public class Master {
 	public Visualizer getVisualizer() {
 		return visualizer;
 	}
-	private int time;
-
-	private boolean stopped;
 	
 	/*
 	 * @author rpolley
@@ -78,6 +84,28 @@ public class Master {
 	 */
 	public int getTime(){
 		return time;
+	}
+	/*
+	 * @author rpolley
+	 * turns an ini file in form of
+	 * arg1: val1
+	 * arg2: val2
+	 * arg3: val3
+	 * into a map mapping args to vals
+	 * @param the ini file
+	 * @returns a map containing the arguments
+	 */
+	public static Map<String,String> parseIni(File f) throws FileNotFoundException{
+		FileInputStream inFile = new FileInputStream(f);
+		Scanner in = new Scanner(inFile);
+		HashMap<String,String> args = new HashMap<String,String>();
+		//iterate over the lines
+		while(in.hasNextLine()){
+			String pair = in.nextLine();
+			String[] kv = pair.split(": ");
+			args.put(kv[0], kv[1]);
+		}
+		return args;
 	}
 	/*
 	 * @author rpolley
@@ -127,12 +155,13 @@ public class Master {
 	public void initializeSimulation(){
 		this.initialInventory = new ArrayList();
 		this.robots = new RobotScheduler();
+		this.robots.addRobots();
 		this.belts = new Belts();
 		this.inventory = new Inventory(initialInventory);
 		this.orders = new Orders();
 		this.floor = new Floor(10,10,1);
 		this.visualizer = new Visualizer();
-		this.visualizerUpdater = this.visualizer;
+		//this.visualizerUpdater = this.visualizer;
 	}
 	/*
 	 * @author rpolley
