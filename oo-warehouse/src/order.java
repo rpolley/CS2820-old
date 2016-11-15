@@ -1,9 +1,10 @@
+package warehouse;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Collection;
 
 /**
- * author: Chaitanya Kovuri
+ * @author: Chaitanya Kovuri
  * git username: itsck
  * Warehouse Final Project: Orders
  */
@@ -23,7 +24,7 @@ public class order {
 		this.address = address;
 		this.status = "arrived"; //order items are present in warehouse and hence order has "arrived" to the warehouse.
 	}
-	
+
 	//update the order status
 	public void updateStatus(String newStatus){
 		this.status = newStatus;
@@ -32,29 +33,29 @@ public class order {
 	/*All the Getters & Setters
 	 * are below.
 	*/
-	
+
 	//Get OrderID
 	public int getOrderID(){
 		return this.OrderID;
 	}
-	
+
 	//Get number of items in the order
 	public int getNumberOfItems(){
 		int itemLength = itemNamesAndQty.size();
 		return itemLength;
 	}
-	
+
 	//Get the Set of items in the order
 	public Set getSetOfItems(){
 		return itemNamesAndQty.keySet();
 	}
-	
+
 	//Get the Set of desired Item Quantities
 	public Collection<Integer> getItemQty(){
 		return itemNamesAndQty.values();
 	}
-	
-	//Get the order address 
+
+	//Get the order address
 	public String getAddress(){
 		return this.address;
 	}
@@ -64,5 +65,5 @@ public class order {
 		return this.status;
 	}
 
-	
+
 }
