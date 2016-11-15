@@ -1,11 +1,20 @@
-
+/**
+ * 
+ * @author JJ
+ *
+ */
 public class Robot extends RobotScheduler {
 	int x;
 	int y;
 	boolean hasShelves = false;
 	boolean inUse = false;
 	double batterylife = 1.0;
-
+	boolean atCharger = false;
+/**
+ * This just puts new robots down
+ * @param startingx
+ * @param startingy
+ */
 	public Robot(int startingx, int startingy) {
 		this.x = startingx;
 		this.y = startingy;
@@ -26,7 +35,19 @@ public class Robot extends RobotScheduler {
 		}
 		return false;
 	}
-
+	/**
+	 * charges the robot once it runs below .1 batterylife 
+	 * then once it hits .9 or above we start doing stuff again with the 
+	 * robot
+	 */
+	public void Charging(){
+		if(batterylife<.9){
+			batterylife=batterylife+.1;
+		}
+		else{
+			this.inUse==false;
+		}
+	}
 	// Makes sure to only move the robot 1 space at a time, and if it does only
 	// move one space go ahead and do it.
 	/**

@@ -1,3 +1,4 @@
+import java.awt.Robot;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -46,9 +47,15 @@ public class RobotScheduler implements FrameListener {// implements Time
 		RequestQueue.add(locations);
 	}
 
+	
+	public void onFrame() {
+		MovingRobots();
+		moveCharger();
+	}
 	/**
 	 * 
-	 * @param requestid
+	 * @param what robot we are using, the x location to where we need to go, the y location of where we need to
+	 * 
 	 *            this id, is up to change but as of right now, i take an order
 	 *            request like, item on shelf 2 move to the picker, or pick up
 	 *            new inventory at the shipping docks and use shelf 4
@@ -60,10 +67,6 @@ public class RobotScheduler implements FrameListener {// implements Time
 	 *         wherever it needs to go, then return that shelf to its orginal
 	 *         location.
 	 */
-	public void onFrame() {
-		MovingRobots();
-	}
-
 	public void moveRobot(Robot i, int toX, int toY) {
 		int toLocationX = toX;
 		int toLocationY = toY;
@@ -108,9 +111,15 @@ public class RobotScheduler implements FrameListener {// implements Time
 		System.out.println("Shelf x loc " + toLocationX + " Shelf y loc " + toLocationY);
 	}
 
+/**
+ * in the process of making this tickable to go along with Master class
+ */
 	public void MovingRobots() {
 		int[] locid = RequestQueue.remove();
 		Robot i = closestRobot(locid[0], locid[1]);
+		if(i==null){
+			return;
+		}
 		// while shelvex doesnt equal robot x etc. with y.
 		if (part1 == 0) {
 			moveRobot(i, locid[0], locid[1]);
@@ -121,11 +130,64 @@ public class RobotScheduler implements FrameListener {// implements Time
 		if (part1 == 1) {
 			moveRobot(i, locid[2], locid[3]);
 		}
-		if(part2==2){
+		if(part1==2){
 			moveRobot(i, locid[0], locid[1])
+		}
+		if(part1==3){
+			i.inUse==false;
+			part1=0;
+			
 		}
 
 		// }
+
+	}
+/**
+ * move the robot to the charger, Im going to have to get rid of the parameter because
+ * tickable wont let me use the same robot as I want to.
+ *basically just move the robot to where the charger is, then while at that
+ *charger it will charge itself until full or close to full
+ * @param i
+ */
+	public void moveCharger(Robot i){
+		if(i.inUse==false){
+			return;
+		}
+		int toLocationX=8;
+		int check = 0;
+		//temp sets loction of charger at 8,8
+		int toLocationY=8;
+		int robotx=RobotLocs.get(i)[0];
+		int roboty=RobotLocs.get(i)[1];
+		if(toLocationX==robotx && toLocationY==roboty){
+			if(i.inUse==true){
+				i.Charging();
+			}
+			
+			}
+		if (toLocationX - robotx < 0) {
+			i.move(robotx - 1, roboty);
+			// if it isnt a legal move, it wont move that means we can
+			// do
+			// something else
+			// System.out.println(RobotLocs.get(i)[0]+"yolo");
+			if (i.isLegalMove(robotx - 1, roboty) == false) {
+				check = 0;
+			} else {
+				check = 1;
+			}
+		} else if (toLocationX - robotx > 0) {
+			i.move(robotx + 1, roboty);
+			if (i.isLegalMove(robotx + 1, roboty) == false) {
+			} else {
+				check = 1;
+			}
+		}
+		if (check == 0 && toLocationY - roboty < 0) {
+			i.move(robotx, roboty - 1);
+		} else if (check == 0 && toLocationY - roboty > 0) {
+			i.move(robotx, roboty + 1);
+		}
 
 	}
 
@@ -140,6 +202,12 @@ public class RobotScheduler implements FrameListener {// implements Time
 	public Robot closestRobot(int x, int y) {
 		for (Robot i : RobotLocs.keySet()) {
 			if ((i.inUse == false)) {
+				if(getBatteryLife(i)<.1){
+					i.inUse==true;
+					moveCharger(i);
+					continue;
+				}
+				i.inUse==true;
 				return i;
 			}
 		}
