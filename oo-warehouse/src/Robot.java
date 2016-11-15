@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * @author Jonathan Reinhart
  *
  */
@@ -36,8 +36,8 @@ public class Robot extends RobotScheduler {
 		return false;
 	}
 	/**
-	 * charges the robot once it runs below .1 batterylife 
-	 * then once it hits .9 or above we start doing stuff again with the 
+	 * charges the robot once it runs below .1 batterylife
+	 * then once it hits .9 or above we start doing stuff again with the
 	 * robot
 	 */
 	public void Charging(){
@@ -45,18 +45,18 @@ public class Robot extends RobotScheduler {
 			batterylife=batterylife+.1;
 		}
 		else{
-			this.inUse==false;
+			this.inUse=false; //was: inUse==false; 
 		}
 	}
 	// Makes sure to only move the robot 1 space at a time, and if it does only
 	// move one space go ahead and do it.
 	/**
-	 * 
+	 *
 	 * @param toX
 	 * @param toY
 	 * well its gonna move this robots location and update RobotLocs in robot scheduler to the new location
-	 * 
-	 */ 
+	 *
+	 */
 	public void move(int toX, int toY) {
 		if (((x - toX) + (y - toY) == 1) || ((x - toX) + (y - toY) == -1)) {
 			if (isLegalMove(toX, toY)) {
@@ -83,7 +83,7 @@ public class Robot extends RobotScheduler {
 	// Will check if there is something that is in the way, will see if it has
 	// shelves, if so can't run into a shelve.
 	/**
-	 * 
+	 *
 	 * @param toX
 	 * @param toY
 	 * @return boolean, if there is a shelf in the way don't go that way if our robot has a shelf already
