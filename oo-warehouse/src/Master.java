@@ -28,6 +28,8 @@ public class Master {
 	//speed of the simulation relative to real time
 	//0 indicates as fast as the computer can go
 	private int speed;
+	private int time;
+	private boolean stopped;
 	
 	/*
 	 * @author rpolley
@@ -70,9 +72,6 @@ public class Master {
 	public Visualizer getVisualizer() {
 		return visualizer;
 	}
-	private int time;
-
-	private boolean stopped;
 	
 	/*
 	 * @author rpolley
