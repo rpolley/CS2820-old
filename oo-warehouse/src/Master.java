@@ -1,8 +1,13 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.List;
+import java.util.Scanner;
 
 public class Master {
 	protected Master(int speed, int robotCount){
@@ -82,6 +87,28 @@ public class Master {
 	}
 	/*
 	 * @author rpolley
+	 * turns an ini file in form of
+	 * arg1: val1
+	 * arg2: val2
+	 * arg3: val3
+	 * into a map mapping args to vals
+	 * @param the ini file
+	 * @returns a map containing the arguments
+	 */
+	public static Map<String,String> parseIni(File f) throws FileNotFoundException{
+		FileInputStream inFile = new FileInputStream(f);
+		Scanner in = new Scanner(inFile);
+		HashMap<String,String> args = new HashMap<String,String>();
+		//iterate over the lines
+		while(in.hasNextLine()){
+			String pair = in.nextLine();
+			String[] kv = pair.split(": ");
+			args.put(kv[0], kv[1]);
+		}
+		return args;
+	}
+	/*
+	 * @author rpolley
 	 * used if visualizer wants to implement a way to stop the simulation from the ui
 	 * this will cause the main loop to terminate after the call stack containing it resolves
 	 */
@@ -134,7 +161,7 @@ public class Master {
 		this.orders = new Orders();
 		this.floor = new Floor(10,10,1);
 		this.visualizer = new Visualizer();
-		this.visualizerUpdater = this.visualizer;
+		//this.visualizerUpdater = this.visualizer;
 	}
 	/*
 	 * @author rpolley
