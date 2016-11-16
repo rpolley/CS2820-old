@@ -31,6 +31,9 @@ public class Master {
 	private FrameListener visualizerUpdater;//used to make sure that visualizer draws at the end of the frame
 	private List<Map<String,Object>> initialInventory;
 	//speed of the simulation relative to real time
+	//measured in fps
+	//eg 1 indicates 1 second in simulation=1 second real time
+	//and 60 would indicate 1 minute in simulation=1 second real time
 	//0 indicates as fast as the computer can go
 	private int speed;
 	private int time;
@@ -156,7 +159,6 @@ public class Master {
 		this.initialInventory = new ArrayList();
 		this.robots = new RobotScheduler();
 		this.robots.addRobots();
-		this.belts = new Belts();
 		this.inventory = new Inventory(initialInventory);
 		this.orders = new Orders();
 		this.floor = new Floor(10,10,1);
@@ -170,10 +172,13 @@ public class Master {
 	public void startSimulation(){
 		stopped = false;
 		while(!stopped){
+			long frameStart = System.currentTimeMillis();
 			runFrame();
+			long frameEnd = System.currentTimeMillis();
+			long frameRuntime = frameEnd-frameStart;
 			try {
-				if(speed!=0)
-					Thread.sleep(1000/speed);
+				if(speed!=0&&1000/speed>frameEnd-frameStart)
+					Thread.sleep(1000/speed-(frameRuntime));
 			} catch (InterruptedException e) {
 				//ignore the exception
 			}
