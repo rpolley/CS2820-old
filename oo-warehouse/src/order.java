@@ -18,6 +18,12 @@ public class order {
 	String status;
 
     //constructor
+        /**
+         *
+         * @param OrderID
+         * @param itemsQty Map of Items and desired Quantities
+         * @param address
+         */
 	public order (int OrderID, HashMap<String,Integer> itemsQty, String address){
 		this.OrderID = OrderID;
 		this.itemNamesAndQty = itemsQty;
@@ -30,7 +36,7 @@ public class order {
 		this.status = newStatus;
 		}
 
-	/*All the Getters & Setters
+	/**All the Getters & Setters
 	 * are below.
 	*/
 
