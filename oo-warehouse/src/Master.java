@@ -18,6 +18,7 @@ public class Master {
 		this.stopped = true;
 	}
 	//singleton
+	//this is the main master simulation
 	public static final Master master = new Master(1,1);
 	
 	private Collection<FrameListener> subscribedListeners;
@@ -181,6 +182,9 @@ public class Master {
 					Thread.sleep(1000/speed-(frameRuntime));
 			} catch (InterruptedException e) {
 				//ignore the exception
+				//we're not waiting to be woken up
+				//so this exception shouldn't fire
+				//and even if it does, it's not really important to handle
 			}
 		}
 		
