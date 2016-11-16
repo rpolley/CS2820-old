@@ -1,4 +1,3 @@
-import java.awt.Robot;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -23,7 +22,7 @@ public class RobotScheduler implements FrameListener {// implements Time
 	 *         initial locations so there is a void return.
 	 */
 	public void addRobots() {
-		Robot robo1 = new Robot(5, 5);
+		Robot robo1 = new Robot(5,5);
 		int[] temp = new int[2];
 		temp[0] = robo1.x;
 		temp[1] = robo1.y;
