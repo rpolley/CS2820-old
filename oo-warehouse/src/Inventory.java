@@ -25,18 +25,18 @@ public class Inventory {
         //the amount of the item
 	List<Map<String, Object>> inventory = new ArrayList<Map<String, Object>>();
 	//inventory with items in it, each item is a hashmap
-        
+
     public Inventory(List inventory){
         this.inventory = inventory;
     }
-    
-    
+
+
      //This method read a txt file, with items information
      //then put into an arraylist, each element is an item
      //each item has name, amount, existence, shelf, point,...blablabla...
      /**
       * @param nothing, read the file and acquire the inventory information
-      * 
+      *
       */
     public void data(){
     	BufferedReader br = null;
@@ -48,7 +48,7 @@ public class Inventory {
 			e.printStackTrace();
 			return;
 		}
-                
+
 		String[] columnName =
 		{ "Id", "Name", "Amount", "Shelf#", "Position"};  //name of columns
 		int i, index;
@@ -75,7 +75,7 @@ public class Inventory {
                                         //put item information into each item
 					index++;
 				}
-				
+
 				int amount = Integer.parseInt((String) item
 							.get(columnName[2]));
 				if (amount > 0){
@@ -87,22 +87,22 @@ public class Inventory {
 				inventory.add(item);
 			}
 			br.close();  //done read file
-                        
+
 			outPutFile();  //out put the file
 		} catch (IOException e)
 		{
 			e.printStackTrace();
 		}
     }
-        
-        // This method check existence, 
+
+        // This method check existence,
     	// if exist isExist is true
     	// else false
         /**
          * @param itemName
-         * @return boolean, if the item's Amount =0, return false; 
+         * @return boolean, if the item's Amount =0, return false;
          *                  if amount != 0, return true
-         * 
+         *
          */
     public boolean checkExist(String itemName){
 
@@ -125,18 +125,50 @@ public class Inventory {
 				isExist = false;
 			}
 		}
-    	return isExist;	
+    	return isExist;
     }
-    
-    
-     //This method can remove item from the inventory 
+
+/**
+*@author Chaitanya Kovuri
+*previous checkExist() method did not have Quantity as a parameter.
+* So I added it under a similar method to make sure I did not modify your
+* original code.
+* @param itemName is the Item you want to check in the inventory database.
+* @param Qty is the desired Quantity
+*/
+
+		public boolean checkExistWithQty(String itemName, int Qty){
+
+    	for (int i = 0; i < inventory.size(); i++)
+		{
+    		Map<String, Object> newItem = new HashMap<String, Object>();
+    		newItem = inventory.get(i);
+			if (itemName.equals( newItem.get("Name").toString())){
+				int a = Integer.parseInt((String) newItem.get("Amount"));
+				if (a == Qty){
+					isExist = true;
+					break;
+				}
+				else{
+					isExist = false;
+				}
+			}
+			else{
+				isExist = false;
+			}
+		}
+    	return isExist;
+    }
+
+
+     //This method can remove item from the inventory
      //first check if the item is in stock
       //if not exist, say not found
       //if exist, let the item's amount -1
       /**
        * @param itemName
        * its gonna remove the item is called, subtract by 1 in Amount
-       * 
+       *
        */
     public void removeItem(String itemName){
     	if (checkExist(itemName) == true){
@@ -146,11 +178,11 @@ public class Inventory {
     		{
         		Map<String, Object> removedItem = new HashMap<String, Object>();
         		removedItem = inventory.get(i);
-        		
+
     			if (itemName.equals(removedItem.get("Name").toString())){
     				int a = Integer.parseInt((String) removedItem.get("Amount"));
     				removedItem.put("Amount",a-1);
-    				
+
     				if (a-1 < 1){
     					removedItem.put("Existence","N");
     				}
@@ -161,17 +193,17 @@ public class Inventory {
     		System.out.println("Item not exist");
     		checkExist(itemName);
     	}
-    	
-    	outPutFile();	
+
+    	outPutFile();
     }
-    
+
      //This method add item to inventory
      //if item already in inventory, amount +1
      //if not in list, make new item id, let amount =1
-     /** 
-      * @param itemName 
+     /**
+      * @param itemName
       * its gonna add the called item into the inventory, plus the Amount by 1
-      * 
+      *
       */
     public void addItem(String itemName){
     	boolean InList = false;
@@ -196,22 +228,22 @@ public class Inventory {
     		newItem.put("Existence","Y");
     		inventory.add(newItem);
     	}
-    	
-    	outPutFile();  
-    } 
-    
+
+    	outPutFile();
+    }
+
      //This method write the modified inventory list into a new file.txt
      //output a new file with refreshed list
      /**
-      * @param nothing, but write all the "inventory" into a new file 
-      * 
+      * @param nothing, but write all the "inventory" into a new file
+      *
       */
     public void outPutFile(){
     	try
 		{
     	   PrintWriter pw = new PrintWriter(new File("C:\\Users\\fgao6\\Desktop\\list2.txt"));
     	   pw.println("Id\tName\tAmount\tShelf#\tPosition\tExistence");
-    	   String[] columnName = { "Id", "Name", "Amount", "Shelf#", "Position"}; 
+    	   String[] columnName = { "Id", "Name", "Amount", "Shelf#", "Position"};
 			int cIndex;
 			for (int i = 0; i < inventory.size(); i++)
 			{
@@ -226,30 +258,30 @@ public class Inventory {
 			}
 			pw.flush();
 			pw.close();
-    	   
+
 		} catch (IOException e)
 		{
 			e.printStackTrace();
 		}
     }
-    
+
     //main method to test for inventory
     /**
-     * @param args 
+     * @param args
      */
     public static void main(String[] args) {
-		
+
 	List<Map<String, Object>> listA = new ArrayList<Map<String, Object>>();
 	 //add code here to read file and insert the item in to listA
-	    
+
 	Inventory a = new Inventory(listA);
 	a.data();
 	 //a.checkExist("K");
-		
+
 	a.addItem("Z");
 	a.addItem("H");
 	a.addItem("A");
 	a.addItem("F");
 	a.removeItem("K");
-	}  
+	}
 }
