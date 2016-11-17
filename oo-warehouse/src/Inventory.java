@@ -135,6 +135,9 @@ public class Inventory {
 * original code.
 * @param itemName is the Item you want to check in the inventory database.
 * @param Qty is the desired Quantity
+* Also an advice. I think using a HashMap<String, Integer> where the key is the
+* itemName and the VALUE= item's Quantity. This would make the check method
+* more efficient because you can just use something like HashMap.get("ItemName") 
 */
 
 		public boolean checkExistWithQty(String itemName, int Qty){
@@ -145,7 +148,7 @@ public class Inventory {
     		newItem = inventory.get(i);
 			if (itemName.equals( newItem.get("Name").toString())){
 				int a = Integer.parseInt((String) newItem.get("Amount"));
-				if (a == Qty){
+				if (a == Qty){ //to check if Inventory has both the Item and Qty the customer wants.
 					isExist = true;
 					break;
 				}
